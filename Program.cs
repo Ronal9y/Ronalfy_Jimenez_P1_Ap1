@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Ronalfy_Jimenez_P1_Ap1.Components;
 
 namespace Ronalfy_Jimenez_P1_Ap1
@@ -11,6 +12,8 @@ namespace Ronalfy_Jimenez_P1_Ap1
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            
 
             var app = builder.Build();
 
