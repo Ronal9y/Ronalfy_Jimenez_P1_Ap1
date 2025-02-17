@@ -1,5 +1,114 @@
 ﻿@page "/Modelo/Index"
+@using Ronalfy_Jimenez_P1_Ap1.Services
+@inject AporteService aporteService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Consulta de Aportes</PageTitle>
+
+<div class="card shadow-lg">
+    <div class="card-header bg-white text-center text-white py-3 rounded">
+        <h3 class="font-weight-bold text-black">Consulta de Aportes</h3>
+    </div>
+
+    <div class="row mb-3 align-items-center px-3">
+        <div class="col-md-3">
+            <label for="Filtro" class="form-label">Filtrar por:</label>
+            <select class="form-select" @bind="filtro">
+                <option value="AporteID">AporteId</option>
+                <option value="Persona">Persona</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="ValorFiltro" class="form-label">B&uacute;squeda:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" @bind="valorFiltro" placeholder="Buscar" />
+                <button class="btn btn-primary" type="button" @onclick="Buscar">
+                    <i class="bi bi-search"></i> Buscar
+                </button>
+            </div>
+        </div>
+        <div class="col-md-3 text-end">
+            <a href="/Modelo/Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Crear
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>AporteId</th>
+                <th>Fecha</th>
+                <th>Persona</th>
+                <th>Observacion</th>
+                <th>Monto</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Listar != null && Listar.Count > 0)
+            {
+                @foreach (var modelo in Listar)
+                {
+                    <tr>
+                        <td>@modelo.AporteId</td>
+                        <td>@modelo.Persona</td>
+
+                        <td>
+                            <a href="/Modelo/Edit/@modelo.AporteId" class="btn btn-outline-success">
+                                <i class="bi bi-pencil-square fs-4"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/Modelo/Delete/@modelo.AporteId" class="btn btn-outline-danger">
+                                <i class="bi bi-trash-fill fs-4"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No se encontraron resultados</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="card-footer text-end">
+        <p>Conteo:@Listar.Count</p>
+    </div>
+</div>
 
 @code {
+
+    public List<Modelo> Listar { get; set; } = new List<Modelo>();
+    public string filtro { get; set; } = "AporteID";
+    public string valorFiltro { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Listar = await aporteService.Listar(s => true);
+    }
+
+    public async Task Buscar()
+    {
+        if (string.IsNullOrEmpty(valorFiltro))
+        {
+            Listar = await aporteService.Listar(P => true);
+        }
+        else if (filtro == "AporteID" && int.TryParse(valorFiltro, out int aporteId))
+        {
+            Listar = await aporteService.Listar(m => m.AporteId == aporteId);
+        }
+        else if (filtro == "Persona")
+        {
+            Listar = await aporteService.Listar(m => m.Persona.Contains(valorFiltro));
+        }
+    }
+
 
 }
