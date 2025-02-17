@@ -1,6 +1,7 @@
-﻿namespace Ronalfy_Jimenez_P1_Ap1.Services
+﻿
+
+namespace Ronalfy_Jimenez_P1_Ap1.Services;
+
+public class Service
 {
-    public class Service
-    {
-    }
 }
