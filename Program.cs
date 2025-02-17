@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ronalfy_Jimenez_P1_Ap1.Components;
+using Ronalfy_Jimenez_P1_Ap1.DAL;
+using Ronalfy_Jimenez_P1_Ap1.Services;
 
 namespace Ronalfy_Jimenez_P1_Ap1
 {
@@ -13,7 +15,13 @@ namespace Ronalfy_Jimenez_P1_Ap1
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            
+            var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
+            builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
+
+            builder.Services.AddScoped<Service>();
+            builder.Services.AddBlazorBootstrap();
+
+
 
             var app = builder.Build();
 
