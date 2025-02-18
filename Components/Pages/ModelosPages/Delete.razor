@@ -1,5 +1,5 @@
 ﻿@page "/Modelo/Delete"
-@page "/Modelo/Delete{AporteId: int}"
+@page "/Modelo/Delete/{AporteId:int}"
 @inject AporteService aporteService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
@@ -87,7 +87,7 @@
 
     public async Task Volver()
     {
-        navigationManager.NavigateTo("/Modelos/Index");
+        navigationManager.NavigateTo("/Modelo/Index");
     }
 
 }
